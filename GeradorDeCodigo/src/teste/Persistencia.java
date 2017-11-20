@@ -47,7 +47,7 @@ public class Persistencia {
     }
 
     private String gerarPersistencia(String nomeEntidade, ArrayList<String> colunas, String nomePacote) throws SQLException {
-
+        
         String conteudo = "package " + nomePacote + ";\n"
                 + "\n"
                 + "import entidade." + primeiraMaiuscula(nomeEntidade) + ";\n"
