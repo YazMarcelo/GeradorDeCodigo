@@ -10,7 +10,7 @@ package interfacesgraficas;
  * @author selecta
  */
 public class TelaEscolha extends javax.swing.JFrame {
-
+    TelaPrincipal tp = new TelaPrincipal();
     /**
      * Creates new form TelaEscolha
      */
@@ -31,10 +31,10 @@ public class TelaEscolha extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButtonEntidade = new javax.swing.JButton();
+        jButtonPersistencia = new javax.swing.JButton();
+        jButtonNegocio = new javax.swing.JButton();
+        jButtonTudo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,25 +42,30 @@ public class TelaEscolha extends javax.swing.JFrame {
 
         jLabel1.setText("O que deseja Gerar?");
 
-        jButton1.setBackground(new java.awt.Color(0, 136, 204));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Entidade");
+        jButtonEntidade.setBackground(new java.awt.Color(0, 136, 204));
+        jButtonEntidade.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonEntidade.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonEntidade.setText("Entidade");
+        jButtonEntidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEntidadeActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(0, 136, 204));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Persistencia");
+        jButtonPersistencia.setBackground(new java.awt.Color(0, 136, 204));
+        jButtonPersistencia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonPersistencia.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonPersistencia.setText("Persistencia");
 
-        jButton3.setBackground(new java.awt.Color(0, 136, 204));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Negócio");
+        jButtonNegocio.setBackground(new java.awt.Color(0, 136, 204));
+        jButtonNegocio.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonNegocio.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonNegocio.setText("Negócio");
 
-        jButton4.setBackground(new java.awt.Color(0, 136, 204));
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Tudo");
+        jButtonTudo.setBackground(new java.awt.Color(0, 136, 204));
+        jButtonTudo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonTudo.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonTudo.setText("Tudo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,13 +78,13 @@ public class TelaEscolha extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jButton1)
+                        .addComponent(jButtonEntidade)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(jButtonPersistencia)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
+                        .addComponent(jButtonNegocio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)))
+                        .addComponent(jButtonTudo)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -89,10 +94,10 @@ public class TelaEscolha extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButtonEntidade)
+                    .addComponent(jButtonPersistencia)
+                    .addComponent(jButtonNegocio)
+                    .addComponent(jButtonTudo))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
@@ -109,6 +114,10 @@ public class TelaEscolha extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonEntidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntidadeActionPerformed
+        
+    }//GEN-LAST:event_jButtonEntidadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,10 +155,10 @@ public class TelaEscolha extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonEntidade;
+    private javax.swing.JButton jButtonNegocio;
+    private javax.swing.JButton jButtonPersistencia;
+    private javax.swing.JButton jButtonTudo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

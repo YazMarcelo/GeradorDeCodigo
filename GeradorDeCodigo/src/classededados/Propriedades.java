@@ -51,7 +51,8 @@ public class Propriedades {
         ArrayList<String> listaTabelas = new ArrayList<>();
         int i = 0;
         while (rs.next()) {
-            if (i >= 2) {
+            String finaldalista = rs.getString(3).substring(rs.getString(3).length()-3,rs.getString(3).length());
+            if(!(finaldalista).equals("seq") && !(finaldalista).equals("key")){
             listaTabelas.add(rs.getString(3));
             }
             i++;
