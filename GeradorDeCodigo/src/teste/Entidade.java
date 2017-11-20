@@ -21,8 +21,8 @@ public class Entidade {
 
     public static void main(String[] args) throws IOException, Exception {
         Entidade cc = new Entidade();
-        String caminho = "C:/Users/selecta/Documents/NetBeansProjects/GeradorDeCodigo/GeradorDeCodigo/src/arquivos";
-        cc.gerarArquivoEntidade(caminho, "exemplo", "exemplo", "public", "arquivos");
+        String caminho = "C:/Users/aluno/Documents/NetBeansProjects/GeradorDeCodigo/GeradorDeCodigo/src/arquivos";
+        cc.gerarArquivoEntidade(caminho, "cliente", "cliente", "public", "arquivos");
     }
 
     public void gerarArquivoEntidade(String caminho, String nomeEntidade, String tableName, String schemaName, String nomePakage) throws IOException, Exception {
