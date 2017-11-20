@@ -28,7 +28,7 @@ public class Conexao {
     private static Connection conectar() {
         try {
             Class.forName("org.postgresql.Driver");
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/promocao", "postgres", "123456");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/promocao", "postgres", "selecta#2013");
         } catch (ClassNotFoundException e) {
             System.out.println("A aplicação não contém o driver para o banco.");
             return null;

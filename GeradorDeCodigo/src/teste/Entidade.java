@@ -21,7 +21,7 @@ public class Entidade {
 
     public static void main(String[] args) throws IOException, Exception {
         Entidade cc = new Entidade();
-        String caminho = "C:/Users/HELM/Documents/NetBeansProjects/GeradorDeCodigo/src/arquivos";
+        String caminho = "C:/Users/selecta/Documents/NetBeansProjects/GeradorDeCodigo/GeradorDeCodigo/src/arquivos";
         cc.gerarArquivoEntidade(caminho, "exemplo", "exemplo", "public", "arquivos");
     }
 
@@ -58,6 +58,7 @@ public class Entidade {
         String atributos = "";
         String metodos = "";
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String importar = "";
 
         for (int i = 0; i < colunas.size(); i++) {
             String linha = colunas.get(i);
@@ -73,6 +74,7 @@ public class Entidade {
                 tipo = primeiraMaiuscula(props.getTabelaForeignKey(vetor[1]));
                 nomeMetodo = primeiraMaiuscula(tableReference);
                 vetor[1] = tableReference;
+                importar += "import arquivos."+primeiraMaiuscula(tableReference);
             } else {
                 vetor[1] = retirarUnderline(2,vetor[1]);
                 atributos += "private " + getTipo(Integer.parseInt(vetor[0])) + " " + vetor[1] + ";\n";

@@ -121,8 +121,6 @@ public class Propriedades {
     
     public boolean isForeignKey(String coluna, String tabela) throws SQLException{
         ArrayList<String> listaForeignKeys = getForeignKey(tabela);
-        String padrao = (listaForeignKeys.get(0)).substring(0,5);
-        
         
         for (int i = 0; i < listaForeignKeys.size(); i++) {
             if(coluna.equals(listaForeignKeys.get(i))){
