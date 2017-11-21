@@ -349,6 +349,8 @@ public class Persistencia {
 
     public String getTipo(int tipo) {
         switch (tipo) {
+            case 2:
+                return "int";
             case 4:
                 return "int";
             case 5:
