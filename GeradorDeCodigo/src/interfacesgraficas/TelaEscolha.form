@@ -117,6 +117,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Persistencia"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPersistenciaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonNegocio">
           <Properties>
@@ -131,6 +134,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Neg&#xf3;cio"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonNegocioActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonTudo">
           <Properties>
@@ -145,6 +151,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Tudo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonTudoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

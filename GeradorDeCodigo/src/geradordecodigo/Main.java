@@ -20,9 +20,9 @@ public class Main {
                 System.out.println("----Tabela----");
                 System.out.println(listaTabelas.get(j));
                 listaColunas = props.getColunas(listaTabelas.get(j), listaSchemas.get(i));
-
+                System.out.println("----Coluna----");
                 for (int k = 0; k < listaColunas.size(); k++) {
-                    System.out.println("----Coluna----");
+
                     System.out.println(listaColunas.get(k));
                 }
             }

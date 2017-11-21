@@ -21,7 +21,7 @@ public class Entidade {
 
     public static void main(String[] args) throws IOException, Exception {
         Entidade cc = new Entidade();
-        String caminho = "C:/Users/aluno/Documents/NetBeansProjects/GeradorDeCodigo/GeradorDeCodigo/src/arquivos";
+        String caminho = "C:/Users/HELM/Documents/NetBeansProjects/GeradorDeCodigo/GeradorDeCodigo/src/arquivos";
         cc.gerarArquivoEntidade(caminho, "cliente", "cliente", "public", "arquivos");
     }
 
@@ -29,7 +29,7 @@ public class Entidade {
         this.tableName = tableName;
         this.schemaName = schemaName;
 
-        nomeEntidade = retirarUnderline(1,nomeEntidade);
+        nomeEntidade = retirarUnderline(1, nomeEntidade);
 
         String entidade = nomeEntidade.substring(0, 1).toUpperCase() + nomeEntidade.substring(1, nomeEntidade.length());
         File f = new File(caminho + "/" + entidade + ".java");
@@ -74,11 +74,12 @@ public class Entidade {
                 tipo = primeiraMaiuscula(props.getTabelaForeignKey(vetor[1]));
                 nomeMetodo = primeiraMaiuscula(tableReference);
                 vetor[1] = tableReference;
-                importar += "import arquivos."+primeiraMaiuscula(tableReference);
             } else {
-                vetor[1] = retirarUnderline(2,vetor[1]);
+                vetor[1] = retirarUnderline(2, vetor[1]);
                 atributos += "private " + getTipo(Integer.parseInt(vetor[0])) + " " + vetor[1] + ";\n";
                 tipo = getTipo(Integer.parseInt(vetor[0]));
+                if(tipo.equals("Date")) importar = "import java.util."+tipo+";\n";
+                
             }
 
             //getter
@@ -94,6 +95,7 @@ public class Entidade {
 
         String conteudo = "package " + nomePacote + ";\n"
                 + "\n"
+                + importar + "\n"
                 + "public class " + nomeEntidade + " {\n"
                 + "\n"
                 + atributos
@@ -110,10 +112,14 @@ public class Entidade {
 
     public String getTipo(int tipo) {
         switch (tipo) {
+            case 4:
+                return "int";
             case 5:
                 return "int";
             case 12:
                 return "String";
+            case 91:
+                return "Date";
             case 93:
                 return "Date";
         }
@@ -130,7 +136,7 @@ public class Entidade {
                 for (int i = 0; i < vetor.length; i++) {
                     retorno += primeiraMaiuscula(vetor[i]);
                 }
-            }else if (tipo == 2) {
+            } else if (tipo == 2) {
                 retorno += vetor[0].toLowerCase();
                 for (int i = 1; i < vetor.length; i++) {
                     retorno += primeiraMaiuscula(vetor[i]);

@@ -7,6 +7,9 @@ package interfacesgraficas;
 
 import classededados.Propriedades;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import teste.Entidade;
 
 /**
  *
@@ -16,6 +19,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     int tipo;
     Propriedades props = new Propriedades();
+    Entidade ent = new Entidade();
 
     /**
      * Creates new form TelaPrincipal
@@ -105,6 +109,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel6.setText("Negócio:");
 
         jButtonGerar.setText("Gerar");
+        jButtonGerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGerarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,15 +126,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jComboBoxSchemas, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jComboBoxTabelas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxSchemas, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxTabelas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -200,12 +208,34 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxSchemasMouseClicked
 
     private void jComboBoxSchemasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBoxSchemasMouseExited
-        
+
     }//GEN-LAST:event_jComboBoxSchemasMouseExited
 
     private void jComboBoxSchemasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSchemasActionPerformed
-       adicionandoDadosComboBoxTabelas();
+        adicionandoDadosComboBoxTabelas();
     }//GEN-LAST:event_jComboBoxSchemasActionPerformed
+
+    private void jButtonGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGerarActionPerformed
+        String schema = (String) jComboBoxSchemas.getSelectedItem();
+        String tabela = (String) jComboBoxTabelas.getSelectedItem();
+        String caminhoEnt = jtfCaminhoEntidade.getText();
+        String caminhoPers = jtfCaminhoPersistencia.getText();
+        String caminhoNeg = jtfCaminhoNegocio.getText();
+        String packageEnt = "arquivos";
+
+//        if(!(schema.equals("Todos"))){
+//                    if(!(tabela.equals("Todos"))){
+//                        
+//                    }
+//                }
+        switch (tipo) {
+            case 1:
+                gerarEntidades(caminhoEnt, tabela, tabela, schema, packageEnt);
+                break;
+        }
+
+
+    }//GEN-LAST:event_jButtonGerarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,13 +316,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             if (!(schema.equals("Todos"))) {
                 listaTabelas = props.getTabelas(schema);
-            }else{
-            ArrayList<String> listaSchemas;
-            listaSchemas = props.getSchemasNames();
+            } else {
+                ArrayList<String> listaSchemas;
+                listaSchemas = props.getSchemasNames();
 
-            for (String str : listaSchemas) {
-                listaTabelas = props.getTabelas(str);
-            }
+                for (String str : listaSchemas) {
+                    listaTabelas = props.getTabelas(str);
+                }
             }
 
             jComboBoxTabelas.addItem("Todos");
@@ -302,6 +332,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } catch (Exception ex) {
 
         }
+    }
+    
+    public void gerarEntidades(String caminho, String nomeEntidade, 
+            String tableName, String schemaName, String nomePakage){
+        try {
+                    if (!(schemaName.equals("Todos"))) {
+                        if (!(tableName.equals("Todos"))) {
+                            ent.gerarArquivoEntidade(caminho, tableName, tableName, schemaName, nomePakage);
+                        } else {
+                            ArrayList<String> listaEntidades = props.getTabelas(schemaName);
+                            for (String entidade : listaEntidades) {
+                                ent.gerarArquivoEntidade(caminho, entidade, entidade, schemaName, nomePakage);
+                            }
+                        }
+                    }else{
+                        ArrayList<String> listaSchemas = props.getSchemasNames();
+                        for (String schema : listaSchemas) {
+                            ArrayList<String> listaEntidades = props.getTabelas(schema);
+                            for (String entidade : listaEntidades) {
+                                ent.gerarArquivoEntidade(caminho, entidade, entidade, schema, nomePakage);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
     }
 
 }

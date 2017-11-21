@@ -10,7 +10,9 @@ package interfacesgraficas;
  * @author selecta
  */
 public class TelaEscolha extends javax.swing.JFrame {
+
     TelaPrincipal tp = new TelaPrincipal();
+
     /**
      * Creates new form TelaEscolha
      */
@@ -56,16 +58,31 @@ public class TelaEscolha extends javax.swing.JFrame {
         jButtonPersistencia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonPersistencia.setForeground(new java.awt.Color(255, 255, 255));
         jButtonPersistencia.setText("Persistencia");
+        jButtonPersistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPersistenciaActionPerformed(evt);
+            }
+        });
 
         jButtonNegocio.setBackground(new java.awt.Color(0, 136, 204));
         jButtonNegocio.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonNegocio.setForeground(new java.awt.Color(255, 255, 255));
         jButtonNegocio.setText("Negócio");
+        jButtonNegocio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNegocioActionPerformed(evt);
+            }
+        });
 
         jButtonTudo.setBackground(new java.awt.Color(0, 136, 204));
         jButtonTudo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonTudo.setForeground(new java.awt.Color(255, 255, 255));
         jButtonTudo.setText("Tudo");
+        jButtonTudo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonTudoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -116,8 +133,28 @@ public class TelaEscolha extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEntidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntidadeActionPerformed
-        
+        tp.setTipo(1);
+        tp.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonEntidadeActionPerformed
+
+    private void jButtonPersistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPersistenciaActionPerformed
+        tp.setTipo(2);
+        tp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonPersistenciaActionPerformed
+
+    private void jButtonNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNegocioActionPerformed
+        tp.setTipo(3);
+        tp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonNegocioActionPerformed
+
+    private void jButtonTudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTudoActionPerformed
+        tp.setTipo(4);
+        tp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonTudoActionPerformed
 
     /**
      * @param args the command line arguments
