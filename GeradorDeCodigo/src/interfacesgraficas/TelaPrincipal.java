@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import teste.Entidade;
+import teste.Negocio;
+import teste.Persistencia;
 
 /**
  *
@@ -20,6 +22,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     int tipo;
     Propriedades props = new Propriedades();
     Entidade ent = new Entidade();
+    Persistencia pers = new Persistencia();
+    Negocio neg = new Negocio();
 
     /**
      * Creates new form TelaPrincipal
@@ -221,16 +225,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
         String caminhoEnt = jtfCaminhoEntidade.getText();
         String caminhoPers = jtfCaminhoPersistencia.getText();
         String caminhoNeg = jtfCaminhoNegocio.getText();
-        String packageEnt = "arquivos";
+        String packageEnt = "entidade";
+        String packagePer = "persistencia";
+        String packageNeg = "negocio";
 
-//        if(!(schema.equals("Todos"))){
-//                    if(!(tabela.equals("Todos"))){
-//                        
-//                    }
-//                }
+        
+        
         switch (tipo) {
             case 1:
                 gerarEntidades(caminhoEnt, tabela, tabela, schema, packageEnt);
+                break;
+            case 2:
+                gerarPersistencias(caminhoPers, tabela, tabela, schema, packagePer, packageEnt, packageNeg);
+                break;
+            case 3:
+                gerarNegocios(caminhoNeg, tabela, tabela, schema, packagePer, packageEnt, packagePer);
+                break;
+            case 4:
+                gerarEntidades(caminhoEnt, tabela, tabela, schema, packageEnt);
+                gerarPersistencias(caminhoPers, tabela, tabela, schema, packagePer, packageEnt, packageNeg);
+                gerarNegocios(caminhoNeg, tabela, tabela, schema, packagePer, packageEnt, packagePer);
                 break;
         }
 
@@ -352,6 +366,58 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             ArrayList<String> listaEntidades = props.getTabelas(schema);
                             for (String entidade : listaEntidades) {
                                 ent.gerarArquivoEntidade(caminho, entidade, entidade, schema, nomePakage);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
+    
+    public void gerarPersistencias(String caminho, String nomeEntidade, 
+            String tableName, String schemaName, String nomePakage, String packageEntidade, String packageNegocio){
+        try {
+                    if (!(schemaName.equals("Todos"))) {
+                        if (!(tableName.equals("Todos"))) {
+                            pers.gerarArquivoPersistencia(caminho, tableName, tableName, schemaName, nomePakage, packageEntidade, packageNegocio);
+                        } else {
+                            ArrayList<String> listaEntidades = props.getTabelas(schemaName);
+                            for (String entidade : listaEntidades) {
+                                pers.gerarArquivoPersistencia(caminho, entidade, entidade, schemaName, nomePakage, packageEntidade, packageNegocio);
+                            }
+                        }
+                    }else{
+                        ArrayList<String> listaSchemas = props.getSchemasNames();
+                        for (String schema : listaSchemas) {
+                            ArrayList<String> listaEntidades = props.getTabelas(schema);
+                            for (String entidade : listaEntidades) {
+                                pers.gerarArquivoPersistencia(caminho, entidade, entidade, schema, nomePakage, packageEntidade, packageNegocio);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
+    
+    public void gerarNegocios(String caminho, String nomeEntidade, 
+            String tableName, String schemaName, String nomePakage, String packageEntidade, String packagePersistencia){
+        try {
+                    if (!(schemaName.equals("Todos"))) {
+                        if (!(tableName.equals("Todos"))) {
+                            neg.gerarArquivoNegocio(caminho, tableName, tableName, schemaName, nomePakage, packageEntidade, packagePersistencia);
+                        } else {
+                            ArrayList<String> listaEntidades = props.getTabelas(schemaName);
+                            for (String entidade : listaEntidades) {
+                                neg.gerarArquivoNegocio(caminho, entidade, entidade, schemaName, nomePakage, packageEntidade, packagePersistencia);
+                            }
+                        }
+                    }else{
+                        ArrayList<String> listaSchemas = props.getSchemasNames();
+                        for (String schema : listaSchemas) {
+                            ArrayList<String> listaEntidades = props.getTabelas(schema);
+                            for (String entidade : listaEntidades) {
+                                neg.gerarArquivoNegocio(caminho, entidade, entidade, schema, nomePakage, packageEntidade, packagePersistencia);
                             }
                         }
                     }

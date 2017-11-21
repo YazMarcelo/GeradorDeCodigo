@@ -79,16 +79,15 @@ public class Entidade {
                 atributos += "private " + getTipo(Integer.parseInt(vetor[0])) + " " + vetor[1] + ";\n";
                 tipo = getTipo(Integer.parseInt(vetor[0]));
                 if(tipo.equals("Date")) importar = "import java.util."+tipo+";\n";
-                
             }
 
             //getter
-            metodos += "public " + tipo + " get" + nomeMetodo + "() {\n";
+            metodos += "public " + tipo + " get" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "() {\n";
             metodos += "return " + vetor[1] + ";\n";
             metodos += "}\n\n";
 
             //setter
-            metodos += "public void set" + nomeMetodo + "(" + tipo + " " + vetor[1] + ") {\n";
+            metodos += "public void set" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "(" + tipo + " " + vetor[1] + ") {\n";
             metodos += "this." + vetor[1] + " = " + vetor[1] + ";\n";
             metodos += "}\n\n";
         }
