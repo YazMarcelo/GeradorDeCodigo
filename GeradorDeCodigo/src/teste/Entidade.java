@@ -61,16 +61,17 @@ public class Entidade {
         String importar = "";
 
         for (int i = 0; i < colunas.size(); i++) {
+            if(i!=1 && i!=2){
             String linha = colunas.get(i);
             String[] vetor = linha.split("-");
             vetor[1] = vetor[1].replace(padraoTabela, "");
 
             String nomeMetodo = vetor[1].substring(0, 1).toUpperCase() + vetor[1].substring(1, vetor[1].length());
             String tipo = "";
-
+            
             if (props.isForeignKey(vetor[1], tableName)) {
                 String tableReference = props.getTabelaForeignKey(vetor[1]);
-                atributos += "private " + primeiraMaiuscula(tableReference) + " " + tableReference + ";\n";
+                atributos += "private " + primeiraMaiuscula(retirarUnderline(1,tableReference)) + " " + retirarUnderline(2, tableReference) + ";\n";
                 tipo = primeiraMaiuscula(props.getTabelaForeignKey(vetor[1]));
                 nomeMetodo = primeiraMaiuscula(tableReference);
                 vetor[1] = tableReference;
@@ -80,16 +81,19 @@ public class Entidade {
                 tipo = getTipo(Integer.parseInt(vetor[0]));
                 if(tipo.equals("Date")) importar = "import java.util."+tipo+";\n";
             }
-
+            
+            vetor[1] = retirarUnderline(2,vetor[1]);
+            
             //getter
-            metodos += "public " + tipo + " get" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "() {\n";
+            metodos += "public " + retirarUnderline(1, tipo) + " get" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "() {\n";
             metodos += "return " + vetor[1] + ";\n";
             metodos += "}\n\n";
 
             //setter
-            metodos += "public void set" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "(" + tipo + " " + vetor[1] + ") {\n";
+            metodos += "public void set" + primeiraMaiuscula(retirarUnderline(2,nomeMetodo)) + "(" + retirarUnderline(1, tipo) + " " + vetor[1] + ") {\n";
             metodos += "this." + vetor[1] + " = " + vetor[1] + ";\n";
             metodos += "}\n\n";
+        }
         }
 
         String conteudo = "package " + nomePacote + ";\n"

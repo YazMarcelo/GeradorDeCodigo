@@ -82,13 +82,13 @@ public class Persistencia {
         String prepStat = "";
         String colunaId = "";
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
-
+        int c = 1;
         for (int i = 0; i < colunas.size(); i++) {
             String linha = colunas.get(i);
             String[] vetor = linha.split("-");
             String nomeMetodo = vetor[1];
 
-            if (i > 0) {
+            if (i > 2) {
                 if (i + 1 != colunas.size()) {
                     atributos += vetor[1] + ",";
                     qtdAtribustos += "?,";
@@ -100,10 +100,10 @@ public class Persistencia {
                     nomeMetodo = primeiraMaiuscula(nomeMetodo.substring(10, nomeMetodo.length()));
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0])))
-                            + "(" + i + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
+                            + "(" + c + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
-                    prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + i + ",";
+                    prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
                     
                     if(getTipo(Integer.parseInt(vetor[0])).equals("Date")){
                         prepStat += " (Date) obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
@@ -111,10 +111,11 @@ public class Persistencia {
                         prepStat += " obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
                     }
                 }
+                c++;
             } else {
                 colunaId = nomeMetodo;
             }
-
+            
         }
 
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
@@ -160,13 +161,14 @@ public class Persistencia {
         String colunaId = "";
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
 
+        int c = 1;
         int i = 0;
         while (i < colunas.size()) {
             String linha = colunas.get(i);
             String[] vetor = linha.split("-");
             String nomeMetodo = vetor[1];
 
-            if (i > 0) {
+            if (i > 2) {
                 if (i + 1 != colunas.size()) {
                     atributos += vetor[1] + " = ?,\"\n+\"";
                 } else {
@@ -176,10 +178,10 @@ public class Persistencia {
                     nomeMetodo = primeiraMaiuscula(nomeMetodo.substring(10, nomeMetodo.length()));
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0])))
-                            + "(" + i + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
+                            + "(" + c + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
-                    prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + i + ",";
+                    prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
                     
                     if(getTipo(Integer.parseInt(vetor[0])).equals("Date")){
                         prepStat += " (Date) obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
@@ -187,6 +189,7 @@ public class Persistencia {
                         prepStat += " obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
                     }
                 }
+                c++;
             } else {
                 colunaId = nomeMetodo;
             }
