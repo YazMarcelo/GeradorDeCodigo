@@ -54,8 +54,8 @@ public class Persistencia {
 
         String conteudo = "package " + nomePacote + ";\n"
                 + "\n"
-                + "import "+packageEntidade+".*;\n"
-                + "import "+packageNegocio+".*;\n"
+                + "import " + packageEntidade + ".*;\n"
+                + "import " + packageNegocio + ".*;\n"
                 + "import interfaces.CRUD;\n"
                 + "import java.sql.*;\n"
                 + "import java.util.ArrayList;\n"
@@ -104,18 +104,20 @@ public class Persistencia {
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
-                    
-                    if(getTipo(Integer.parseInt(vetor[0])).equals("Date")){
-                        prepStat += " (Date) obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
-                    }else{
-                        prepStat += " obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
+
+                    if (getTipo(Integer.parseInt(vetor[0])).equals("Date")) {
+                        prepStat += " (Date) obj.get" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
+                    } else {
+                        prepStat += " obj.get" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
                     }
                 }
                 c++;
             } else {
-                colunaId = nomeMetodo;
+                if (i<1) {
+                    colunaId = nomeMetodo;
+                }
             }
-            
+
         }
 
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
@@ -182,11 +184,11 @@ public class Persistencia {
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
-                    
-                    if(getTipo(Integer.parseInt(vetor[0])).equals("Date")){
-                        prepStat += " (Date) obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
-                    }else{
-                        prepStat += " obj.get"+ primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
+
+                    if (getTipo(Integer.parseInt(vetor[0])).equals("Date")) {
+                        prepStat += " (Date) obj.get" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
+                    } else {
+                        prepStat += " obj.get" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "());\n";
                     }
                 }
                 c++;
@@ -226,19 +228,20 @@ public class Persistencia {
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
 
         for (int i = 0; i < colunas.size(); i++) {
-            String linha = colunas.get(i);
-            String[] vetor = linha.split("-");
-            String nomeMetodo = vetor[1];
+            if (i > 2) {
+                String linha = colunas.get(i);
+                String[] vetor = linha.split("-");
+                String nomeMetodo = vetor[1];
 
-            if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
-                String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
-                atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
-                        + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
-            } else {
-                nomeMetodo = nomeMetodo.replace(padraoTabela, "");
-                atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
+                if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
+                    String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
+                    atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
+                            + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
+                } else {
+                    nomeMetodo = nomeMetodo.replace(padraoTabela, "");
+                    atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
+                }
             }
-
         }
 
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
@@ -278,19 +281,20 @@ public class Persistencia {
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
 
         for (int i = 0; i < colunas.size(); i++) {
-            String linha = colunas.get(i);
-            String[] vetor = linha.split("-");
-            String nomeMetodo = vetor[1];
+            if (i > 2) {
+                String linha = colunas.get(i);
+                String[] vetor = linha.split("-");
+                String nomeMetodo = vetor[1];
 
-            if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
-                String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
-                atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
-                        + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
-            } else {
-                nomeMetodo = nomeMetodo.replace(padraoTabela, "");
-                atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
+                if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
+                    String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
+                    atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
+                            + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
+                } else {
+                    nomeMetodo = nomeMetodo.replace(padraoTabela, "");
+                    atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
+                }
             }
-
         }
 
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
@@ -308,7 +312,7 @@ public class Persistencia {
                 + "\n"
                 + "        ResultSet rs = prd.executeQuery();\n"
                 + "\n"
-                + "        "+primeiraMaiuscula(nomeEntidade)+" objeto = new "+primeiraMaiuscula(nomeEntidade)+"();\n"
+                + "        " + primeiraMaiuscula(nomeEntidade) + " objeto = new " + primeiraMaiuscula(nomeEntidade) + "();\n"
                 + "\n"
                 + "        if (rs.next()) {\n"
                 + atributos
