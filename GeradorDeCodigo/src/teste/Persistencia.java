@@ -200,7 +200,7 @@ public class Persistencia {
 
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
 
-        prepStat += "prd.setInt(" + i + ", obj.get" + primeiraMaiuscula(chavePrimaria.replace(padraoTabela, "")) + "());\n";
+        prepStat += "prd.setInt(" + c + ", obj.get" + primeiraMaiuscula(chavePrimaria.replace(padraoTabela, "")) + "());\n";
 
         String conteudo = "    @Override\n"
                 + "    public void alterar(Object objeto) throws Exception {\n"
@@ -228,7 +228,7 @@ public class Persistencia {
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
 
         for (int i = 0; i < colunas.size(); i++) {
-            if (i > 2) {
+            if (i > 2 || i<1) {
                 String linha = colunas.get(i);
                 String[] vetor = linha.split("-");
                 String nomeMetodo = vetor[1];
@@ -251,7 +251,7 @@ public class Persistencia {
                 + "        \n"
                 + "        ArrayList<Object> listaObjs = new ArrayList<>();\n"
                 + "\n"
-                + "        String sql = \"select * from " + schemaName + "." + tableName + " order by " + chavePrimaria + "\";\n"
+                + "        String sql = \"select * from " + schemaName + "." + tableName + " where excluido = false order by " + chavePrimaria + " \";\n"
                 + "\n"
                 + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "        Statement stm = cnn.createStatement();\n"
@@ -279,9 +279,10 @@ public class Persistencia {
         String prepStat = "";
         String colunaId = "";
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
-
+        
+        
         for (int i = 0; i < colunas.size(); i++) {
-            if (i > 2) {
+            if (i > 2 || i<1) {
                 String linha = colunas.get(i);
                 String[] vetor = linha.split("-");
                 String nomeMetodo = vetor[1];
@@ -294,6 +295,7 @@ public class Persistencia {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
                 }
+                
             }
         }
 
@@ -301,7 +303,7 @@ public class Persistencia {
 
         String conteudo = "@Override\n"
                 + "    public Object consultar(String id) throws Exception {\n"
-                + "        String sql = \"select * from " + schemaName + "." + tableName + " where " + chavePrimaria + " = ?;\";\n"
+                + "        String sql = \"select * from " + schemaName + "." + tableName + " where " + chavePrimaria + " = ? and excluido = false;\";\n"
                 + "\n"
                 + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "\n"
