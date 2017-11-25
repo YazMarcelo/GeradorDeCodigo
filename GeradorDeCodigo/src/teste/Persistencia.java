@@ -275,9 +275,6 @@ public class Persistencia {
 
     private String gerarConsultar(String nomeEntidade, ArrayList<String> colunas) throws SQLException {
         String atributos = "";
-        String qtdAtribustos = "";
-        String prepStat = "";
-        String colunaId = "";
         String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
         
         
