@@ -18,6 +18,7 @@ public class TelaEscolha extends javax.swing.JFrame {
      */
     public TelaEscolha() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

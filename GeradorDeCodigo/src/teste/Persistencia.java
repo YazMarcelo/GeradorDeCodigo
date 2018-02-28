@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -65,6 +66,7 @@ public class Persistencia {
                 + " * @author Marcelo\n"
                 + " */\n"
                 + "public class " + primeiraMaiuscula(nomeEntidade) + "DAO implements CRUD{\n"
+                + "private final Connection cnn = util.Conexao.getConexao();\n"
                 + gerarIncluir(nomeEntidade, colunas) + "\n"
                 + gerarExcluir(nomeEntidade) + "\n"
                 + gerarAlterar(nomeEntidade, colunas) + "\n"
@@ -81,11 +83,11 @@ public class Persistencia {
         String qtdAtribustos = "";
         String prepStat = "";
         String colunaId = "";
-        String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String padraoTabela = (colunas.get(0).split(";")[1]).substring(0, 5);
         int c = 1;
         for (int i = 0; i < colunas.size(); i++) {
             String linha = colunas.get(i);
-            String[] vetor = linha.split("-");
+            String[] vetor = linha.split(";");
             String nomeMetodo = vetor[1];
 
             if (i > 2) {
@@ -100,7 +102,7 @@ public class Persistencia {
                     nomeMetodo = primeiraMaiuscula(nomeMetodo.substring(10, nomeMetodo.length()));
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0])))
-                            + "(" + c + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
+                            + "(" + c + ", obj.get" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "().get" + nomeMetodo + "());\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
@@ -128,7 +130,6 @@ public class Persistencia {
                 + "        \n"
                 + "        String sql = \"insert into " + tableName + " (" + atributos + ") VALUES (" + qtdAtribustos + ");\";\n"
                 + "\n"
-                + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "\n"
                 + "        PreparedStatement prd = cnn.prepareStatement(sql);\n"
                 + "\n"
@@ -149,7 +150,6 @@ public class Persistencia {
                 + "        }\n"
                 + "\n"
                 + "        rs.close();\n"
-                + "        cnn.close();\n"
                 + "    }";
         return conteudo;
 
@@ -180,7 +180,7 @@ public class Persistencia {
                     nomeMetodo = primeiraMaiuscula(nomeMetodo.substring(10, nomeMetodo.length()));
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0])))
-                            + "(" + c + ", obj.get" + primeiraMaiuscula(tableReference) + "().get" + nomeMetodo + "());\n";
+                            + "(" + c + ", obj.get" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "().get" + nomeMetodo + "());\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     prepStat += "prd.set" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(" + c + ",";
@@ -209,7 +209,6 @@ public class Persistencia {
                 + "        \n"
                 + "        String sql = \"update " + schemaName + "." + tableName + " set " + atributos + " where " + chavePrimaria + " = ?;\";\n"
                 + "\n"
-                + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "\n"
                 + "        PreparedStatement prd = cnn.prepareStatement(sql);\n"
                 + "\n"
@@ -218,7 +217,6 @@ public class Persistencia {
                 + "        prd.execute();\n"
                 + "\n"
                 + "        prd.close();\n"
-                + "        cnn.close(); \n"
                 + "    }";
         return conteudo;
     }
@@ -235,8 +233,8 @@ public class Persistencia {
 
                 if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
-                    atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
-                            + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
+                    atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "(new N" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "().consultar"
+                            + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\")));\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
@@ -247,13 +245,12 @@ public class Persistencia {
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
 
         String conteudo = "@Override\n"
-                + "    public ArrayList<Object> listar() throws Exception {\n"
+                + "    public ArrayList<"+primeiraMaiuscula(nomeEntidade)+"> listar() throws Exception {\n"
                 + "        \n"
-                + "        ArrayList<Object> listaObjs = new ArrayList<>();\n"
+                + "        ArrayList<"+primeiraMaiuscula(nomeEntidade)+"> listaObjs = new ArrayList<>();\n"
                 + "\n"
                 + "        String sql = \"select * from " + schemaName + "." + tableName + " where excluido = false order by " + chavePrimaria + " \";\n"
                 + "\n"
-                + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "        Statement stm = cnn.createStatement();\n"
                 + "        ResultSet rs = stm.executeQuery(sql);\n"
                 + "\n"
@@ -266,7 +263,6 @@ public class Persistencia {
                 + "        }\n"
                 + "\n"
                 + "        rs.close();\n"
-                + "        cnn.close();\n"
                 + "\n"
                 + "        return listaObjs;\n"
                 + "    }";
@@ -286,8 +282,8 @@ public class Persistencia {
 
                 if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
                     String tableReference = props.getTabelaForeignKey(vetor[1].replace(padraoTabela, ""));
-                    atributos += "objeto.set" + primeiraMaiuscula(tableReference) + "(new N" + primeiraMaiuscula(tableReference) + "().consultar"
-                            + "(String.valueOf(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"))));\n";
+                    atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "(new N" + primeiraMaiuscula(retirarUnderline(1, tableReference)) + "().consultar"
+                            + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\")));\n";
                 } else {
                     nomeMetodo = nomeMetodo.replace(padraoTabela, "");
                     atributos += "objeto.set" + primeiraMaiuscula(retirarUnderline(2, nomeMetodo)) + "(rs.get" + primeiraMaiuscula(getTipo(Integer.parseInt(vetor[0]))) + "(\"" + vetor[1] + "\"));\n";
@@ -299,15 +295,14 @@ public class Persistencia {
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
 
         String conteudo = "@Override\n"
-                + "    public Object consultar(String id) throws Exception {\n"
+                + "    public Object consultar(int id) throws Exception {\n"
                 + "        String sql = \"select * from " + schemaName + "." + tableName + " where " + chavePrimaria + " = ? and excluido = false;\";\n"
                 + "\n"
-                + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "\n"
                 + "        PreparedStatement prd = cnn.prepareStatement(sql);\n"
                 + "\n"
                 + "        //Seta os valores para o procedimento\n"
-                + "        prd.setInt(1, Integer.parseInt(id));\n"
+                + "        prd.setInt(1, id);\n"
                 + "\n"
                 + "        ResultSet rs = prd.executeQuery();\n"
                 + "\n"
@@ -320,7 +315,6 @@ public class Persistencia {
                 + "        prd.execute();\n"
                 + "\n"
                 + "        prd.close();\n"
-                + "        cnn.close();\n"
                 + "\n"
                 + "        return objeto;\n"
                 + "    }";
@@ -331,19 +325,18 @@ public class Persistencia {
         String chavePrimaria = props.getPrimaryKey(tableName, schemaName);
 
         String conteudo = "    @Override\n"
-                + "    public void excluir(String id) throws Exception {\n"
+                + "    public void excluir(int id) throws Exception {\n"
                 + "        String sql = \"UPDATE " + schemaName + "." + tableName + " set excluido = true WHERE " + chavePrimaria + " = ?;\";\n"
                 + "\n"
                 + "        Connection cnn = util.Conexao.getConexao();\n"
                 + "\n"
                 + "        PreparedStatement prd = cnn.prepareStatement(sql);\n"
                 + "\n"
-                + "        prd.setInt(1, Integer.parseInt(id));\n"
+                + "        prd.setInt(1, id);\n"
                 + "\n"
                 + "        prd.execute();\n"
                 + "\n"
                 + "        prd.close();\n"
-                + "        cnn.close();\n"
                 + "    }";
         return conteudo;
     }
@@ -356,7 +349,7 @@ public class Persistencia {
     public String getTipo(int tipo) {
         switch (tipo) {
             case 2:
-                return "int";
+                return "double";
             case 4:
                 return "int";
             case 5:

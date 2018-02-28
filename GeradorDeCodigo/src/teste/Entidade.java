@@ -57,13 +57,13 @@ public class Entidade {
     private String gerarTextoEntidade(String nomeEntidade, ArrayList<String> colunas, String nomePacote) throws SQLException {
         String atributos = "";
         String metodos = "";
-        String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String padraoTabela = (colunas.get(0).split(";")[1]).substring(0, 5);
         String importar = "";
 
         for (int i = 0; i < colunas.size(); i++) {
-            if(i!=1 && i!=2){
+            if(i!=1){
             String linha = colunas.get(i);
-            String[] vetor = linha.split("-");
+            String[] vetor = linha.split(";");
             vetor[1] = vetor[1].replace(padraoTabela, "");
 
             String nomeMetodo = vetor[1].substring(0, 1).toUpperCase() + vetor[1].substring(1, vetor[1].length());
@@ -115,8 +115,10 @@ public class Entidade {
 
     public String getTipo(int tipo) {
         switch (tipo) {
+            case -7:
+                return "boolean";
             case 2:
-                return "int";
+                return "double";
             case 4:
                 return "int";
             case 5:

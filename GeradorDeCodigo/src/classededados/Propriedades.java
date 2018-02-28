@@ -68,7 +68,7 @@ public class Propriedades {
 
         ArrayList<String> listaColunas = new ArrayList<>();
         while (rs.next()) {
-            listaColunas.add(rs.getString("DATA_TYPE") + "-" + rs.getString("COLUMN_NAME"));
+            listaColunas.add(rs.getString("DATA_TYPE") + ";" + rs.getString("COLUMN_NAME"));
         }
 
         conn.close();
@@ -137,12 +137,17 @@ public class Propriedades {
         
         for (int i = 0; i < tabelasEPadroes.size(); i++) {
             String linha = tabelasEPadroes.get(i);
-            String[] vetor = linha.split("-");
+            String[] vetor = linha.split(";");
             
             if(padrao.equals(vetor[1])){
                 return vetor[0];
             }
         }
+        return null;
+    }
+    
+    public String getAAA() throws SQLException{
+        
         return null;
     }
 

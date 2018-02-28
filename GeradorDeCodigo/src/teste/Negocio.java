@@ -88,15 +88,15 @@ public class Negocio {
                 + "        }\n"
                 + "    }\n"
                 + "\n"
-                + "    public void excluir(String codigo) throws SQLException, Exception {\n"
+                + "    public void excluir(int codigo) throws SQLException, Exception {\n"
                 + "        dao.excluir(codigo);\n"
                 + "    }\n"
                 + "\n"
-                + "    public "+primeiraMaiuscula(nomeEntidade)+" consultar(String codigo) throws SQLException, Exception {\n"
+                + "    public "+primeiraMaiuscula(nomeEntidade)+" consultar(int codigo) throws SQLException, Exception {\n"
                 + "        return ("+primeiraMaiuscula(nomeEntidade)+") dao.consultar(codigo);\n"
                 + "    }\n"
                 + "\n"
-                + "    public ArrayList<Object> listar() throws SQLException, Exception {\n"
+                + "    public ArrayList<"+primeiraMaiuscula(nomeEntidade)+"> listar() throws SQLException, Exception {\n"
                 + "        return dao.listar();\n"
                 + "    }\n"
                 + "}\n"
@@ -112,7 +112,7 @@ public class Negocio {
     public String getTipo(int tipo) {
         switch (tipo) {
             case 2:
-                return "int";
+                return "double";
             case 4:
                 return "int";
             case 5:
