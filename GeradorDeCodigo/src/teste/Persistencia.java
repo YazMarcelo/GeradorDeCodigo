@@ -161,13 +161,13 @@ public class Persistencia {
         String qtdAtribustos = "";
         String prepStat = "";
         String colunaId = "";
-        String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String padraoTabela = (colunas.get(0).split(";")[1]).substring(0, 5);
 
         int c = 1;
         int i = 0;
         while (i < colunas.size()) {
             String linha = colunas.get(i);
-            String[] vetor = linha.split("-");
+            String[] vetor = linha.split(";");
             String nomeMetodo = vetor[1];
 
             if (i > 2) {
@@ -223,12 +223,12 @@ public class Persistencia {
 
     private String gerarListar(String nomeEntidade, ArrayList<String> colunas) throws SQLException {
         String atributos = "";
-        String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String padraoTabela = (colunas.get(0).split(";")[1]).substring(0, 5);
 
         for (int i = 0; i < colunas.size(); i++) {
             if (i > 2 || i<1) {
                 String linha = colunas.get(i);
-                String[] vetor = linha.split("-");
+                String[] vetor = linha.split(";");
                 String nomeMetodo = vetor[1];
 
                 if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {
@@ -271,13 +271,13 @@ public class Persistencia {
 
     private String gerarConsultar(String nomeEntidade, ArrayList<String> colunas) throws SQLException {
         String atributos = "";
-        String padraoTabela = (colunas.get(0).split("-")[1]).substring(0, 5);
+        String padraoTabela = (colunas.get(0).split(";")[1]).substring(0, 5);
         
         
         for (int i = 0; i < colunas.size(); i++) {
             if (i > 2 || i<1) {
                 String linha = colunas.get(i);
-                String[] vetor = linha.split("-");
+                String[] vetor = linha.split(";");
                 String nomeMetodo = vetor[1];
 
                 if (props.isForeignKey(vetor[1].replace(padraoTabela, ""), tableName)) {

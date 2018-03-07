@@ -86,7 +86,7 @@ public class Propriedades {
             String primary = getPrimaryKey(tabela, "public");
             String padrao = primary.substring(0,4);
             
-            novaLista.add(tabela+"-"+padrao);
+            novaLista.add(tabela+";"+padrao);
             }
             
         }
